@@ -23,15 +23,27 @@ void loop() {
   // muddy white color, the value that decreased from 255 to 0 is
   // replaced with the color to be added in.
   // the periodicity(?) is 10 s, so the delay should be multiples of 10s
-  // start with red --> green
 
+  // start with red --> green
   blend(RED_PIN, GRN_PIN);
-  // take away green, add blue
+  // add blue, take away green
   blend(BLU_PIN, GRN_PIN);
+  // add red, take away blue
   blend(BLU_PIN, RED_PIN);
+  // add green, take away red
   blend(GRN_PIN, RED_PIN);
+  // add blue, take away green
   blend(GRN_PIN, BLU_PIN);
+  // add red, take away blue
   blend(RED_PIN, BLU_PIN);
+
+  // NB: this is done with a series of 6 steps to allow
+  // the colors to 'wrap around'. there are 3 combinations
+  // but every run of blend() alternates which values are
+  // high (~255) or low (~0). to ensure that the alternating
+  // end states of the params don't interfere with the color
+  // transitions, 6 transitions are done to get back to
+  // the starting color (red)
 }
 
 float calculateLightValueOne(unsigned long time) {
