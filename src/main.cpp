@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <math.h>
 
-const byte RED_PIN = 3;
-const int DELAY = 10000;
+const int DELAY = 1000;
+const byte RED_PIN = 9;
 const byte GRN_PIN = 6;
 const byte BLU_PIN = 5;
 unsigned long time;
@@ -12,7 +12,7 @@ float calculateLightValueOne(unsigned long time);
 float calculateLightValueTwo(unsigned long time);
 
 void setup() {
-  Serial.begin(9600);
+  // Serial.begin(9600);
 }
 
 void loop() {
@@ -47,25 +47,21 @@ void loop() {
 }
 
 float calculateLightValueOne(unsigned long time) {
-  float lightVal = (-.5 * sin((time/10000.0 * PI) - (PI * .5))) + .5;
-  return lightVal;
+  return (-.5 * sin((time/(DELAY * 1.0) * PI) - (PI * .5))) + .5;
 }
 
 float calculateLightValueTwo(unsigned long time) {
-  float lightVal = (.5 * sin((time/10000.0 * PI) - (PI * .5))) + .5;
-  return lightVal;
+  return (.5 * sin((time/(DELAY * 1.0) * PI) - (PI * .5))) + .5;
 }
 
 void blend(byte pin1, byte pin2) {
-  unsigned long start;
-  start = millis();
+  unsigned long start = millis();
   unsigned long time = start;
-  int pinSignal1;
-  int pinSignal2;
+
   while (time < start + DELAY) {
-    pinSignal1 = static_cast<int>(255 * calculateLightValueOne(time));
+    byte pinSignal1 = static_cast<byte>(255 * calculateLightValueOne(time));
     analogWrite(pin1, pinSignal1);
-    pinSignal2 = static_cast<int>(255 * calculateLightValueTwo(time));
+    byte pinSignal2 = static_cast<byte>(255 * calculateLightValueTwo(time));
     analogWrite(pin2, pinSignal2);
     time = millis();
   }
