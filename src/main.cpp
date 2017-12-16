@@ -1,29 +1,29 @@
 #include <Arduino.h>
 #include <math.h>
 
-const int DELAY = 1000;
+int DELAY = 20000;
+
 const byte RED_PIN = 9;
-const byte GRN_PIN = 6;
-const byte BLU_PIN = 5;
+const byte GRN_PIN = 10;
+const byte BLU_PIN = 11;
+
 unsigned long time;
 
+void fade();
 void blend(byte pin1, byte pin2);
 float calculateLightValueOne(unsigned long time);
 float calculateLightValueTwo(unsigned long time);
 
+
 void setup() {
-  // Serial.begin(9600);
+    Serial.begin(9600);
 }
 
 void loop() {
-  // blend works by using reciprocal sine functions
-  // the colors are blended as follows:
-  // one is increased from 0, the other starts at 1 * 255 and decreases
-  // when it is time to change colors, to avoid the appearance of a
-  // muddy white color, the value that decreased from 255 to 0 is
-  // replaced with the color to be added in.
-  // the periodicity(?) is 10 s, so the delay should be multiples of 10s
+    fade();
+}
 
+void fade() {
   // start with red --> green
   blend(RED_PIN, GRN_PIN);
   // add blue, take away green
@@ -36,25 +36,26 @@ void loop() {
   blend(GRN_PIN, BLU_PIN);
   // add red, take away blue
   blend(RED_PIN, BLU_PIN);
+}
 
-  // NB: this is done with a series of 6 steps to allow
+  // blend works by using reciprocal sine functions
+  // the colors are blended as follows:
+  // one is increased from 0, the other starts at 1 * 255 and decreases
+  // when it is time to change colors, to avoid the appearance of a
+  // muddy white color, the value that decreased from 255 to 0 is
+  // replaced with the color to be added in.
+
+  // changes are done with a series of 6 steps to allow
   // the colors to 'wrap around'. there are 3 combinations
   // but every run of blend() alternates which values are
   // high (~255) or low (~0). to ensure that the alternating
   // end states of the params don't interfere with the color
   // transitions, 6 transitions are done to get back to
   // the starting color (red)
-}
-
-float calculateLightValueOne(unsigned long time) {
-  return (-.5 * sin((time/(DELAY * 1.0) * PI) - (PI * .5))) + .5;
-}
-
-float calculateLightValueTwo(unsigned long time) {
-  return (.5 * sin((time/(DELAY * 1.0) * PI) - (PI * .5))) + .5;
-}
 
 void blend(byte pin1, byte pin2) {
+    Serial.println("inside blend: ");
+    Serial.println(DELAY);
   unsigned long start = millis();
   unsigned long time = start;
 
@@ -66,3 +67,13 @@ void blend(byte pin1, byte pin2) {
     time = millis();
   }
 }
+
+// TODO: change to use cosine. should be able to get rid of the ` - PI * .5 ` since cos = sin(x + PI/2)
+float calculateLightValueOne(unsigned long time) {
+  return (-.5 * sin((time/(DELAY * 1.0) * PI) - (PI * .5))) + .5;
+}
+
+float calculateLightValueTwo(unsigned long time) {
+  return (.5 * sin((time/(DELAY * 1.0) * PI) - (PI * .5))) + .5;
+}
+
