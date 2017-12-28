@@ -16,7 +16,6 @@ float calculateLightValueTwo(unsigned long time);
 
 
 void setup() {
-    Serial.begin(9600);
 }
 
 void loop() {
@@ -54,8 +53,6 @@ void fade() {
   // the starting color (red)
 
 void blend(byte pin1, byte pin2) {
-    Serial.println("inside blend: ");
-    Serial.println(DELAY);
   unsigned long start = millis();
   unsigned long time = start;
 
