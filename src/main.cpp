@@ -68,7 +68,6 @@ void blend(byte pin1, byte pin2) {
   }
 }
 
-// TODO: change to use cosine. should be able to get rid of the ` - PI * .5 ` since cos = sin(x + PI/2)
 float calculateLightValueOne(unsigned long time) {
   return (-.5 * sin((time/(DELAY * 1.0) * PI) - (PI * .5))) + .5;
 }
