@@ -4,4 +4,4 @@ The source code is in src/main.cpp. The comments serve as the documentation for 
 
 This is what the end result looks like. Schematics of the circuit will follow.
 
-<img src="https://github.com/chrisdobbins/arduino_fade_led/raw/master/lamp.gif" width="48">
+<img src="https://github.com/chrisdobbins/arduino_fade_led/raw/master/lamp.gif" width="150">
